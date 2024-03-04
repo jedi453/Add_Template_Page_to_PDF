@@ -23,7 +23,7 @@ if [ ! -z "$TERMUX_VERSION" ]; then
   fi
   if [ ! -L "$TEMPLATE_LOC" ]; then
     echo "ERROR: '~/Templates' should be a link to your templates location!" >&2
-    echo " TRY running: 'ln -s /sdcard/noteTemplates ~/Templates'" >&2
+    echo " TRY running: 'ln -s /sdcard/noteTemplate ~/Templates'" >&2
     exit 1
   fi
 fi
