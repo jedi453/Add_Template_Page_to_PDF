@@ -6,6 +6,8 @@ This is my temporary solution until Boox adds the Functionality Themselves.
 
 Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might even mess up the writing data on some PDFs (I'm still testing this, it doesn't seem to anymore, but YMMV, and I take NO RESPONSIBILITY for any problems.  If you're concerned, always save as a different filename than the Original.
 
+Please note that all these commands are CASE SENSITIVE (Termux is like Unix that way).  It's best to copy and paste them directly on your Boox device.
+
 ## How to Install/Setup
 --------------
 1. Install F-Droid (It's an "App Store" for free/open-source software): you can get the APK [Here](https://f-droid.org/F-Droid.apk)
@@ -15,9 +17,9 @@ Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might e
     2. Install Prerequisite packages: `apt install fzf pdftk curl -y`
     3. Make a directory(Folder) `bin` in your Home Directory(Folder): `mkdir ~/bin`
     4. Termux Storage Permissions: `termux-setup-storage`.  You'll have to accept the Permission change.  If you're not comfortable with this, this program won't work for now.
-    5. Make a link in your Home directory to your Books directory/folder.  Normally: `ln -s /sdcard/Books ~/Books`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
-4. Make a Templates Folder. For now, they'll have to be in a sub-directory/folder named `Templates` within your Books folder you linked to so Normally Make a Folder Templates in your Books directory from the file explorer.
-5. Add Templates to that new Templates Folder/Directory (PDFs which you want to add the first page from to any PDF), Here's a good place to look to start: [Free Templates](https://www.inksandpens.com/post/ruled-paper-templates/). Things like MDO I believe use A4 sized sheets, so scroll down for those Templates, otherwise, if you need US Letter sized, those are close to the top of the page.
+    5. Make a link in your Home directory to your Books directory/folder.  Normally: `[ ! -l ~/Books ] && ln -s /sdcard/Books ~/Books || echo 'Failed to Create Books Link!'`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
+    6. Make a link in your Home directory to your Templates directory/folder.  Normally: `[ ! -l ~/Templates ] && ln -s /sdcard/noteTemplate ~/Templates || echo 'Failed to Create Templates Link!'`, but if you have your Template PDFs somewhere else, `/sdcard/noteTemplates` will have to be replaced with the correct location.
+5. Add Templates (In PDF format) to that `noteTemplates` folder (or wherever you linked to on your internal storage) which you want to add as templates (Unfortunately for now, they have to be PDFs and only the first page is added). Here's a good place to look to start: [Free Templates](https://www.inksandpens.com/post/ruled-paper-templates/). Things like MDO I believe use A4 sized sheets, so scroll down for those Templates, otherwise, if you need US Letter sized, those are close to the top of the page.
 6. Download the script (In Termux): `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap'`
 7. Make the script runnable/executable in Termux: `chmod 0700 ~/bin/pdf-ap`
 
@@ -46,7 +48,8 @@ The script itself is licensed under [CC0](https://creativecommons.org/public-dom
 
 ## How to update the script
 ---------
-Open Termux and run the command: `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap' && chmod 0700 ~/bin/pdf-ap || echo FAILED`
+- If you're coming from a version that didn't ask you to make a `~/Templates` link, please follow the setup process again, starting at step 3.
+- Otherwise, open Termux and run the command: `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap' && chmod 0700 ~/bin/pdf-ap || echo FAILED`
 
 ### Hopes for Future Updates
 ---------------

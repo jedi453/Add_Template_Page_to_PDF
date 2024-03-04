@@ -18,10 +18,15 @@ if [ ! -z "$TERMUX_VERSION" ]; then
     echo " TRY running: 'ln -s /sdcard/Books/<BOOK_LOCATION> ~/Books'" >&2
     exit 1
   fi
+  if [ ! -L "$HOME/Templates" ]; then
+    echo "ERROR: '$HOME/Templates' should be a link to your templates location!" >&2
+    echo " TRY running: 'ln -s /sdcard/noteTemplates ~/Templates'" >&2
+    exit 1
+  fi
 fi
 
 export PDF_LOC="$HOME/Books/"
-export TEMPLATE_LOC="$HOME/Books/Templates/"
+export TEMPLATE_LOC="$HOME/Templates/"
 
 if [ ! -d "$PDF_LOC" ] ;then
   echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
