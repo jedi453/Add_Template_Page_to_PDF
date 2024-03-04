@@ -11,11 +11,11 @@ Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might e
 1. Install F-Droid (It's an "App Store" for free/open-source software): you can get the APK [Here](https://f-droid.org/F-Droid.apk)
 2. Open F-Droid and search for and install Termux.
 3. Open Termux and you'll need to do a few things:
-  1. Update Termux: `apt update && apt upgrade -y`
-  2. Install Prerequisite packages: `apt install fzf pdftk wget -y`
-  3. Make a directory(Folder) `bin` in your Home Directory(Folder): `mkdir ~/bin`
-  4. Termux Storage Permissions: `termux-setup-storage`.  You'll have to accept the Permission change.  If you're not comfortable with this, this program won't work for now.
-  5. Make a link in your Home directory to your Books directory/folder.  Normally: `ln -s /sdcard/Books ~/Books`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
+    1. Update Termux: `apt update && apt upgrade -y`
+    2. Install Prerequisite packages: `apt install fzf pdftk wget -y`
+    3. Make a directory(Folder) `bin` in your Home Directory(Folder): `mkdir ~/bin`
+    4. Termux Storage Permissions: `termux-setup-storage`.  You'll have to accept the Permission change.  If you're not comfortable with this, this program won't work for now.
+    5. Make a link in your Home directory to your Books directory/folder.  Normally: `ln -s /sdcard/Books ~/Books`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
 4. Make a Templates Folder. For now, they'll have to be in a sub-directory/folder named `Templates` within your Books folder you linked to so Normally Make a Folder Templates in your Books directory from the file explorer.
 5. Add Templates to that new Templates Folder/Directory (PDFs which you want to add the first page from to any PDF), Here's a good place to look to start: [Free Templates](https://www.inksandpens.com/post/ruled-paper-templates/). Things like MDO I believe use A4 sized sheets, so scroll down for those Templates, otherwise, if you need US Letter sized, those are close to the top of the page.
 6. Download the script (In Termux): `cd ~/bin && wget 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/pdf-ap'`
@@ -33,8 +33,8 @@ Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might e
 8. Type in the page number you want to insert the Template Page in DIRECTLY AFTER.  So if you want to add a page between page 10 and 11, enter 10, etc. Then hit enter
 9. The script will tell you, "This may take a while...".  Just give it some time, especially for large PDFs like Year-long Organizers/Books. (I'm looking into ways to speed this up, but for now it can take several minutes to add the page... Sorry about that... XD)
 10. The script will prompt you if you want to over-write the original PDF. The default is "No", which I recommend for now while I sort out some possible issues. If you do want to overwrite (Do so at your own risk!) type a `y` and hit enter.
-  1. If you chose to overwrite the output PDF, the script should finish.
-  2. If you chose not to overwrite the output PDF, the script will prompt for a new filename.  Enter a new name for the new document (Without the `.pdf` suffix, it'll be added automatically).  It will then write to the same directory/folder the input file was in, but with the new name (Make sure you don't use an existing name!).
+    1. If you chose to overwrite the output PDF, the script should finish.
+    2. If you chose not to overwrite the output PDF, the script will prompt for a new filename.  Enter a new name for the new document (Without the `.pdf` suffix, it'll be added automatically).  It will then write to the same directory/folder the input file was in, but with the new name (Make sure you don't use an existing name!).
 11. You can open the PDF in NeoReader, but you'll have to "re-sync" the writing data, a pop-up will appear, you should leave the defaults selected and hit "Ok".
 12. You should be all set! Your new PDF is ready!
 
