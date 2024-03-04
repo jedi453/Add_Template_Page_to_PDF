@@ -70,7 +70,7 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
     exit 1
   fi
   export QUERY=''
-  read -p "Overwrite '$INPUT_PDF' with new PDF? (y/N): " QUERY; export QUERY
+  read -p "Overwrite '$(basename $INPUT_PDF)' with new PDF? (y/N): " QUERY; export QUERY
   if [ "$QUERY" == 'y' -o "$QUERY" == 'Y' ]; then
     cp "$HOME/tmp/output.pdf" "$INPUT_PDF" || exit 1
     echo SUCCESS!
