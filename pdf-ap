@@ -14,12 +14,12 @@ check_pkg fzf
 
 if [ ! -z "$TERMUX_VERSION" ]; then
   if [ ! -L "$HOME/Books" ]; then
-    echo "ERROR: '$HOME/Books' should be a link to your books location!" >&2
+    echo "ERROR: '~/Books' should be a link to your books location!" >&2
     echo " TRY running: 'ln -s /sdcard/Books/<BOOK_LOCATION> ~/Books'" >&2
     exit 1
   fi
   if [ ! -L "$HOME/Templates" ]; then
-    echo "ERROR: '$HOME/Templates' should be a link to your templates location!" >&2
+    echo "ERROR: '~/Templates' should be a link to your templates location!" >&2
     echo " TRY running: 'ln -s /sdcard/noteTemplates ~/Templates'" >&2
     exit 1
   fi
