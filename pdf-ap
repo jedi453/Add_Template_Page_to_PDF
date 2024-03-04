@@ -1,0 +1,90 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+check_pkg() {
+  PKG="$1"
+  if ! which "$1" >/dev/null ; then
+    echo "Requires Package '$PKG'!" >&2
+    echo "Try Running 'apt update && apt install $PKG'" >&2
+    exit 1
+  fi
+}
+
+check_pkg pdftk
+check_pkg fzf
+
+if [ ! -z "$TERMUX_VERSION" ]; then
+  if [ ! -L "$HOME/Books" ]; then
+    echo "ERROR: '$HOME/Books' should be a link to your books location!" >&2
+    echo " TRY running: 'ln -s /sdcard/Books/<BOOK_LOCATION> ~/Books'" >&2
+    exit 1
+  fi
+fi
+
+export PDF_LOC="$HOME/Books/"
+export TEMPLATE_LOC="$HOME/Books/Templates/"
+
+if [ ! -d "$PDF_LOC" ] ;then
+  echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
+  exit 1
+fi
+
+if [ ! -d "$TEMPLATE_LOC" ] ;then
+  echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
+  exit 1
+fi
+
+read -p 'Hit Enter then Search for the Input PDF: ' foo
+export INPUT_PDF="$PDF_LOC/$(cd $PDF_LOC; fzf -q '.pdf$ ')"
+
+read -p 'Hit Enter then Search for the Template to Add: ' foo
+export TEMPLATE_PDF="$TEMPLATE_LOC/$(cd $TEMPLATE_LOC; fzf -q '.pdf$ ')"
+
+read -p 'page number to append template after: ' PAGE; export PAGE
+
+if [ ! "$PAGE" -gt "0" ]; then
+  echo "Invalid Page: '$PAGE'" >&2
+  exit 1
+fi
+
+if [ ! -d "$HOME/tmp" ]; then
+  if ! mkdir "$HOME/tmp"; then
+    echo "Failed to Make Directory '$HOME/tmp'" >&2
+    exit 1
+  fi
+fi
+
+if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
+  cp "$INPUT_PDF" "$HOME/tmp/" || exit 1
+  echo "'$(basename $INPUT_PDF)' Has been copied to $HOME/tmp/"
+  echo "Making Combined PDF..."
+  echo " This Could Take a while!..."
+  pdftk A="$HOME/tmp/$(basename $INPUT_PDF)" B="$TEMPLATE_PDF" cat "A1-$PAGE" B1 "A$(($PAGE+1))-end" output "$HOME/tmp/output.pdf" || exit 1
+  export QUERY=''
+  read -p "Overwrite '$INPUT_PDF' with new PDF? (y/N): " QUERY; export QUERY
+  if [ "$QUERY" == 'y' -o "$QUERY" == 'Y' ]; then
+    cp "$HOME/tmp/output.pdf" "$INPUT_PDF" || exit 1
+    echo SUCCESS!
+    exit 0
+  else 
+    read -p "New Output Filename (Same Directory as Input, omit .pdf suffix): " FILENAME; export FILENAME
+    if [ -e "$FILENAME.pdf" ]; then
+      echo "File '$FILENAME.pdf' Already Exists... Refusing to Overwrite..." >&2
+      exit 1
+    else
+      export QUERY=''
+      read -p "Write New PDF: '$(dirname $INPUT_PDF)/$FILENAME.pdf'? (y/N): " QUERY; export QUERY
+      if [ "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
+        if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
+          echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
+          exit 0
+        else
+          echo "FAILED: Couldn't Write Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
+          exit 1
+        fi
+      fi
+    fi
+  fi
+else
+  echo "Either '$INPUT_PDF' or '$TEMPLATE_PDF' Does Not Exist!" >&2
+  exit 1
+fi
