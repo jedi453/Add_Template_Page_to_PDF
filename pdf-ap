@@ -12,16 +12,21 @@ check_pkg() {
 check_pkg qpdf
 check_pkg fzf
 
+export PDF_LOC="$HOME/Books/"
+export TEMPLATE_LOC="$HOME/Templates/"
+
 if [ ! -z "$TERMUX_VERSION" ]; then
-  if [ ! -L "$HOME/Books" ]; then
-    echo "ERROR: '$HOME/Books' should be a link to your books location!" >&2
-    echo " TRY running: 'ln -s /sdcard/Books/<BOOK_LOCATION> ~/Books'" >&2
+  if [ ! -L "$PDF_LOC" ]; then
+    echo "ERROR: '~/Books' should be a link to your books location!" >&2
+    echo " TRY running: 'ln -s /sdcard/Books ~/Books'" >&2
+    exit 1
+  fi
+  if [ ! -L "$TEMPLATE_LOC" ]; then
+    echo "ERROR: '~/Templates' should be a link to your templates location!" >&2
+    echo " TRY running: 'ln -s /sdcard/noteTemplates ~/Templates'" >&2
     exit 1
   fi
 fi
-
-export PDF_LOC="$HOME/Books/"
-export TEMPLATE_LOC="$HOME/Books/Templates/"
 
 if [ ! -d "$PDF_LOC" ] ;then
   echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
@@ -58,10 +63,6 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
   echo "'$(basename $INPUT_PDF)' Has been copied to $HOME/tmp/"
   echo "Making Combined PDF..."
   echo " This Could Take a while!..."
-  export TMP_FILE="$HOME/tmp/$(basename $INPUT_PDF)"
-  if [ -e "$HOME/tmp/output.pdf" ]; then
-    rm "$HOME/tmp/output.pdf"
-  fi
   qpdf --no-warn --warning-exit-0 "$TMP_FILE" --pages "$TMP_FILE" "1-$PAGE" "$TEMPLATE_PDF" "1-1" "$TMP_FILE" "$(($PAGE+1))-z" -- "$HOME/tmp/output.pdf" >/dev/null
   export QPDF_ERR_CODE="$?"
   if [ "$QPDF_ERR_CODE" -ne 0 ]; then
@@ -84,9 +85,9 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
       echo "  cp ~/tmp/output.pdf ~/Books/$FILENAME--$(date +%F--%H-%M-%S).pdf" >&2
       exit 1
     else
-      if [ ! -e "$(dirname $INPUT_PDF)/$FILENAME.pdf" ]; then
+      if [ ! -e "$(dirname $INPUT_PDF)/$FILENAME.pdf)" ]; then
         export QUERY=''
-        read -p "Write New PDF: '$(dirname $INPUT_PDF)/$FILENAME.pdf'? (Y/n): " QUERY; export QUERY
+        read -p "Write New PDF: \'$(dirname $INPUT_PDF)/$FILENAME.pdf\'? (Y/n): " QUERY; export QUERY
         if [ -z "$QUERY" -o "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
           if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
             echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
