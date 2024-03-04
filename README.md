@@ -18,7 +18,7 @@ Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might e
     5. Make a link in your Home directory to your Books directory/folder.  Normally: `ln -s /sdcard/Books ~/Books`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
 4. Make a Templates Folder. For now, they'll have to be in a sub-directory/folder named `Templates` within your Books folder you linked to so Normally Make a Folder Templates in your Books directory from the file explorer.
 5. Add Templates to that new Templates Folder/Directory (PDFs which you want to add the first page from to any PDF), Here's a good place to look to start: [Free Templates](https://www.inksandpens.com/post/ruled-paper-templates/). Things like MDO I believe use A4 sized sheets, so scroll down for those Templates, otherwise, if you need US Letter sized, those are close to the top of the page.
-6. Download the script (In Termux): `curl -O ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap'`
+6. Download the script (In Termux): `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap'`
 7. Make the script runnable/executable in Termux: `chmod 0700 ~/bin/pdf-ap`
 
 ## How to Use
