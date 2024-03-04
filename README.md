@@ -46,7 +46,7 @@ The script itself is licensed under [CC0](https://creativecommons.org/public-dom
 
 ## How to update the script
 ---------
-Open Termux and run the command: `curl -O ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap && chmod 0700 ~/bin/pdf-ap || echo FAILED'`
+Open Termux and run the command: `curl -O ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap' && chmod 0700 ~/bin/pdf-ap || echo FAILED`
 
 ### Hopes for Future Updates
 ---------------
