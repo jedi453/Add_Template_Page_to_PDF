@@ -60,7 +60,7 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
   echo " This Could Take a while!..."
   pdftk A="$HOME/tmp/$(basename $INPUT_PDF)" B="$TEMPLATE_PDF" cat "A1-$PAGE" B1 "A$(($PAGE+1))-end" output "$HOME/tmp/output.pdf" || exit 1
   export QUERY=''
-  read -p "Overwrite '$INPUT_PDF' with new PDF? (y/N): " QUERY; export QUERY
+  read -p "Overwrite '$(basename $INPUT_PDF)' with new PDF? (y/N): " QUERY; export QUERY
   if [ "$QUERY" == 'y' -o "$QUERY" == 'Y' ]; then
     cp "$HOME/tmp/output.pdf" "$INPUT_PDF" || exit 1
     echo SUCCESS!
