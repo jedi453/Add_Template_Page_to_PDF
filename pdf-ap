@@ -12,8 +12,8 @@ check_pkg() {
 check_pkg qpdf
 check_pkg fzf
 
-export PDF_LOC="$HOME/Books/"
-export TEMPLATE_LOC="$HOME/Templates/"
+export PDF_LOC="$HOME/Books"
+export TEMPLATE_LOC="$HOME/Templates"
 
 if [ ! -z "$TERMUX_VERSION" ]; then
   if [ ! -L "$PDF_LOC" ]; then
