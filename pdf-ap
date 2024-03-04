@@ -76,8 +76,8 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
     else
       if [ ! -e "$(dirname $INPUT_PDF/$FILENAME>pdf)" ]; then
         export QUERY=''
-        read -p "Write New PDF: \'$(dirname $INPUT_PDF)/$FILENAME.pdf\'? (y/N): " QUERY; export QUERY
-        if [ "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
+        read -p "Write New PDF: \'$(dirname $INPUT_PDF)/$FILENAME.pdf\'? (Y/n): " QUERY; export QUERY
+        if [ -z "$QUERY" -o "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
           if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
             echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
             exit 0
