@@ -75,8 +75,12 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
     exit 1
   fi
   read -p "New Output Filename (Same Directory as Input, omit .pdf suffix): " FILENAME; export FILENAME
-  while [ -e "$(dirname $INPUT_PDF)/$FILENAME.pdf" ]; do
-    echo "File '$FILENAME.pdf' Already Exists... Refusing to Overwrite..." >&2
+  while [ -e "$(dirname $INPUT_PDF)/$FILENAME.pdf" -o -z "$FILENAME" ]; do
+    if [ -z "$FILENAME" ]; then
+      echo "Refusing to accept Empty Filename..."
+    else
+      echo "File '$FILENAME.pdf' Already Exists... Refusing to Overwrite..." >&2
+    fi
     echo "FAILED! Please retry with a different filename!" >&2
     echo ""
     read -p "New Output Filename (Same Directory as Input, omit .pdf suffix) (OR Q to Quit): " FILENAME; export FILENAME
