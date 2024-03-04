@@ -15,6 +15,9 @@ check_pkg fzf
 export PDF_LOC="$HOME/Books"
 export TEMPLATE_LOC="$HOME/Templates"
 
+export FULL_PDF_LOC="$(readlink $PDF_LOC || echo $PDF_LOC)"
+export FULL_TEMPLATE_LOC="$(readlink $TEMPLATE_LOC || echo $TEMPLATE_LOC)"
+
 if [ ! -z "$TERMUX_VERSION" ]; then
   if [ ! -L "$PDF_LOC" ]; then
     echo "ERROR: '~/Books' should be a link to your books location!" >&2
@@ -39,10 +42,10 @@ else
 fi
 
 read -p 'Hit Enter then Search for the Input PDF: ' foo
-export INPUT_PDF="$PDF_LOC/$(cd $PDF_LOC; fzf -q '.pdf$ ')"
+export INPUT_PDF="$FULL_PDF_LOC/$(cd $FULL_PDF_LOC; fzf -q '.pdf$ ')"
 
 read -p 'Hit Enter then Search for the Template to Add: ' foo
-export TEMPLATE_PDF="$TEMPLATE_LOC/$(cd $TEMPLATE_LOC; fzf -q '.pdf$ ')"
+export TEMPLATE_PDF="$FULL_TEMPLATE_LOC/$(cd $FULL_TEMPLATE_LOC; fzf -q '.pdf$ ')"
 
 read -p 'page number to append template after: ' PAGE; export PAGE
 
@@ -71,39 +74,29 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
     echo "FAILED to Combine PDFs!" >&2
     exit 1
   fi
-  export QUERY=''
-  read -p "Overwrite '$(basename $INPUT_PDF)' with new PDF? (y/N): " QUERY; export QUERY
-  if [ "$QUERY" == 'y' -o "$QUERY" == 'Y' ]; then
-    cp "$HOME/tmp/output.pdf" "$INPUT_PDF" || exit 1
-    echo SUCCESS!
-    exit 0
-  else 
-    read -p "New Output Filename (Same Directory as Input, omit .pdf suffix): " FILENAME; export FILENAME
-    if [ -e "$(dirname $INPUT_PDF)/$FILENAME.pdf" ]; then
-      echo "File '$FILENAME.pdf' Already Exists... Refusing to Overwrite..." >&2
-      echo "FAILED! Please retry with a different filename!" >&2
-      echo "The PDF is still here though, you can manually copy the it with:" >&2
-      echo "  cp ~/tmp/output.pdf ~/Books/$FILENAME--$(date +%F--%H-%M-%S).pdf" >&2
+  read -p "New Output Filename (Same Directory as Input, omit .pdf suffix): " FILENAME; export FILENAME
+  while [ -e "$(dirname $INPUT_PDF)/$FILENAME.pdf" ]; do
+    echo "File '$FILENAME.pdf' Already Exists... Refusing to Overwrite..." >&2
+    echo "FAILED! Please retry with a different filename!" >&2
+    echo ""
+    read -p "New Output Filename (Same Directory as Input, omit .pdf suffix) (OR Q to Quit): " FILENAME; export FILENAME
+    if [ "$FILENAME" == "Q" ]; then
+      echo "Quitting..." >&2
       exit 1
-    else
-      if [ ! -e "$(dirname $INPUT_PDF)/$FILENAME.pdf)" ]; then
-        export QUERY=''
-        read -p "Write New PDF: \'$(dirname $INPUT_PDF)/$FILENAME.pdf\'? (Y/n): " QUERY; export QUERY
-        if [ -z "$QUERY" -o "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
-          if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
-            echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
-            exit 0
-          else
-            echo "FAILED: Couldn't Write Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'" >&2
-            exit 1
-          fi
-        fi
-      else
-        echo "FAILED: Couldn't Write Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'" >&2
-        echo " FILE EXISTS!" >&2
-        exit 1
-      fi
     fi
+  done
+  if [ ! -e "$(dirname $INPUT_PDF)/$FILENAME.pdf)" ]; then
+    if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
+      echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"
+      exit 0
+    else
+      echo "FAILED: Couldn't Write Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'" >&2
+      exit 1
+    fi
+  else
+    echo "FAILED: Couldn't Write Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'" >&2
+    echo " FILE EXISTS!" >&2
+    exit 1
   fi
 else
   echo "Either '$INPUT_PDF' or '$TEMPLATE_PDF' Does Not Exist!" >&2
