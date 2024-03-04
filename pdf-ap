@@ -26,16 +26,16 @@ if [ ! -z "$TERMUX_VERSION" ]; then
     echo " TRY running: 'ln -s /sdcard/noteTemplate ~/Templates'" >&2
     exit 1
   fi
-fi
+else
+  if [ ! -L "$PDF_LOC" -o ! -d "$PDF_LOC" ] ;then
+    echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
+    exit 1
+  fi
 
-if [ ! -d "$PDF_LOC" ] ;then
-  echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
-  exit 1
-fi
-
-if [ ! -d "$TEMPLATE_LOC" ] ;then
-  echo "ERROR: Directory '$PDF_LOC' Does not Exist!" >&2
-  exit 1
+  if [ ! -L "$TEMPLATE_LOC" -o ! -d "$TEMPLATE_LOC" ] ;then
+    echo "ERROR: Directory '$TEMPLATE_LOC' Does not Exist!" >&2
+    exit 1
+  fi
 fi
 
 read -p 'Hit Enter then Search for the Input PDF: ' foo
