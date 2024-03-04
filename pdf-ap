@@ -59,11 +59,12 @@ if [ ! -d "$HOME/tmp" ]; then
 fi
 
 if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
-  cp "$INPUT_PDF" "$HOME/tmp/" || exit 1
+  export TMP_FILE="$HOME/tmp/$(basename $INPUT_PDF)"
+  cp "$INPUT_PDF" "$TMP_FILE" || exit 1
   echo "'$(basename $INPUT_PDF)' Has been copied to $HOME/tmp/"
   echo "Making Combined PDF..."
   echo " This Could Take a while!..."
-  qpdf --no-warn --warning-exit-0 "$TMP_FILE" --pages "$TMP_FILE" "1-$PAGE" "$TEMPLATE_PDF" "1-1" "$TMP_FILE" "$(($PAGE+1))-z" -- "$HOME/tmp/output.pdf" >/dev/null
+  qpdf --no-warn --warning-exit-0 "$TMP_FILE" --pages "$TMP_FILE" "1-$PAGE" "$TEMPLATE_PDF" "1" "$TMP_FILE" "$(($PAGE+1))-z" -- "$HOME/tmp/output.pdf" >/dev/null
   export QPDF_ERR_CODE="$?"
   if [ "$QPDF_ERR_CODE" -ne 0 ]; then
     echo "qpdf failed with error code: $QPDF_ERR_CODE" >&2
