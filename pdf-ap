@@ -9,7 +9,7 @@ check_pkg() {
   fi
 }
 
-check_pkg pdftk
+check_pkg qpdf
 check_pkg fzf
 
 if [ ! -z "$TERMUX_VERSION" ]; then
@@ -58,7 +58,17 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
   echo "'$(basename $INPUT_PDF)' Has been copied to $HOME/tmp/"
   echo "Making Combined PDF..."
   echo " This Could Take a while!..."
-  pdftk A="$HOME/tmp/$(basename $INPUT_PDF)" B="$TEMPLATE_PDF" cat "A1-$PAGE" B1 "A$(($PAGE+1))-end" output "$HOME/tmp/output.pdf" || exit 1
+  export TMP_FILE="$HOME/tmp/$(basename $INPUT_PDF)"
+  if [ -e "$HOME/tmp/output.pdf" ]; then
+    rm "$HOME/tmp/output.pdf"
+  fi
+  qpdf --no-warn --warning-exit-0 "$TMP_FILE" --pages "$TMP_FILE" "1-$PAGE" "$TEMPLATE_PDF" "1-1" "$TMP_FILE" "$(($PAGE+1))-z" -- "$HOME/tmp/output.pdf" >/dev/null
+  export QPDF_ERR_CODE="$?"
+  if [ "$QPDF_ERR_CODE" -ne 0 ]; then
+    echo "qpdf failed with error code: $QPDF_ERR_CODE" >&2
+    echo "FAILED to Combine PDFs!" >&2
+    exit 1
+  fi
   export QUERY=''
   read -p "Overwrite '$INPUT_PDF' with new PDF? (y/N): " QUERY; export QUERY
   if [ "$QUERY" == 'y' -o "$QUERY" == 'Y' ]; then
@@ -76,7 +86,7 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
     else
       if [ ! -e "$(dirname $INPUT_PDF/$FILENAME>pdf)" ]; then
         export QUERY=''
-        read -p "Write New PDF: \'$(dirname $INPUT_PDF)/$FILENAME.pdf\'? (Y/n): " QUERY; export QUERY
+        read -p "Write New PDF: '$(dirname $INPUT_PDF)/$FILENAME.pdf'? (Y/n): " QUERY; export QUERY
         if [ -z "$QUERY" -o "$QUERY" == "y" -o "$QUERY" == "Y" ]; then
           if cp "$HOME/tmp/output.pdf" "$(dirname $INPUT_PDF)/$FILENAME.pdf"; then
             echo "SUCCESS: Wrote Output to '$(dirname $INPUT_PDF)/$FILENAME.pdf'"

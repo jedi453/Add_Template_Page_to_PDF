@@ -1,4 +1,4 @@
-# Add a Template Page to a PDF Using Termux and pdftk.
+# Add a Template Page to a PDF Using Termux and qpdf.
 ---------------
 I love my Boox Tablet, and I love the firmware 3.5 feature to add a page to a PDF, but I wanted to use a Template PDF to add as a page as well.
 
@@ -12,7 +12,7 @@ Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might e
 2. Open F-Droid and search for and install Termux.
 3. Open Termux and you'll need to do a few things:
     1. Update Termux: `apt update && apt upgrade -y`
-    2. Install Prerequisite packages: `apt install fzf pdftk curl -y`
+    2. Install Prerequisite packages: `apt install qpdf pdftk curl -y`
     3. Make a directory(Folder) `bin` in your Home Directory(Folder): `mkdir ~/bin`
     4. Termux Storage Permissions: `termux-setup-storage`.  You'll have to accept the Permission change.  If you're not comfortable with this, this program won't work for now.
     5. Make a link in your Home directory to your Books directory/folder.  Normally: `ln -s /sdcard/Books ~/Books`, but if you have your PDFs somewhere else, `/sdcard/Books` will have to be replaced with the correct location.
@@ -46,11 +46,10 @@ The script itself is licensed under [CC0](https://creativecommons.org/public-dom
 
 ## How to update the script
 ---------
-Open Termux and run the command: `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/main/pdf-ap' && chmod 0700 ~/bin/pdf-ap || echo FAILED`
+Open Termux and run the command: `curl -o ~/bin/pdf-ap -L 'https://raw.githubusercontent.com/jedi453/Add_Template_Page_to_PDF/qpdf/pdf-ap' && chmod 0700 ~/bin/pdf-ap || echo FAILED`
 
 ### Hopes for Future Updates
 ---------------
-- Maybe switch from using pdftk, which is great, but seems slower than molasses to insert the page (Especially in Large PDFs), to maybe use qpdf, after making sure it won't mess with the hand-writing data (It seems to throw a lot of errors on my marked-up PDFs).
 - Maybe add instructions and modify the script so you can just share the original PDF from the file Manager with Termux, and start the script using that (probably easier) method.
 - Get feedback from the community!  Please let me know if this works or doesn't work for you, and if you have any issues!  Please let me know what features you'd like to see!
 
