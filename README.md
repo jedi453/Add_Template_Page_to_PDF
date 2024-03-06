@@ -6,7 +6,7 @@ This is my temporary solution until Boox adds the Functionality Themselves.
 
 Full Disclosure, it's clunky and slow (Especially for large PDFs) and it might even mess up the writing data on some PDFs (I'm still testing this, it doesn't seem to anymore, but YMMV, and I take NO RESPONSIBILITY for any problems.  If you're concerned, always save as a different filename than the Original.
 
-Please note that all these commands are CASE SENSITIVE (Termux is like Unix that way).  It's best to copy and paste them directly on your Boox device.
+Please note that all these commands are CASE SENSITIVE (Termux is like Unix that way).  It's best to copy and paste them directly on your Boox device.  To paste directly into Termux, please open this page on your Boox device, then copy the code block you need to run next, and switch over to Termux.  In Termux, you can long-press an empty area to open a pop-up allowing you to paste the command you're currently supposed to input.
 
 ## How to Install/Setup
 --------------
