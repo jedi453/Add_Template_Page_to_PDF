@@ -10,7 +10,7 @@ Please note that all these commands are CASE SENSITIVE (Termux is like Unix that
 
 ## How to Install/Setup
 --------------
-The code-block below contain commands to enter, please open this page on your Boox device and copy+paste the commands in to make sure you don't mistype them.
+The code-blocks below contain commands to enter, please open this page on your Boox device and copy+paste the commands in to make sure you don't mistype them.
 1. Install [F-Droid](https://f-droid.org/) (It's an "App Store" for free/open-source software): you can get the APK [Here](https://f-droid.org/F-Droid.apk)
 2. Open F-Droid and search for and install Termux from F-Droid. It will ask for permissions to install packages.  Unfortunately F-Droid needs these permissions, if you'd prefer, you can just install the Termux apk from [here](https://f-droid.org/en/packages/com.termux/) (Please use the latest version, you'll also need to update it on your own if you opt not to use F-Droid).
 3. Open Termux and you'll need to do a few things:
