@@ -9,7 +9,7 @@ check_pkg() {
   fi
 }
 
-check_pkg pdftk
+check_pkg qpdf
 check_pkg fzf
 
 export PDF_LOC="$HOME/Books"
@@ -67,10 +67,17 @@ if [ -f "$INPUT_PDF" -a -f "$TEMPLATE_PDF" ]; then
   echo "'$(basename $INPUT_PDF)' Has been copied to $HOME/tmp/"
   echo "Making Combined PDF..."
   echo " This Could Take a while!..."
+<<<<<<< HEAD
   pdftk A="$HOME/tmp/$(basename $INPUT_PDF)" B="$TEMPLATE_PDF" cat "A1-$PAGE" B1 "A$(($PAGE+1))-end" output "$HOME/tmp/output.pdf"
   PDFTK_ERR_CODE="$?"
   if [ "$PDFTK_ERR_CODE" -ne 0 ]; then
     echo "qpdf failed with error code: $PDFTK_ERR_CODE" >&2
+=======
+  qpdf --no-warn --warning-exit-0 "$TMP_FILE" --pages "$TMP_FILE" "1-$PAGE" "$TEMPLATE_PDF" "1" "$TMP_FILE" "$(($PAGE+1))-z" -- "$HOME/tmp/output.pdf" >/dev/null
+  export QPDF_ERR_CODE="$?"
+  if [ "$QPDF_ERR_CODE" -ne 0 ]; then
+    echo "qpdf failed with error code: $QPDF_ERR_CODE" >&2
+>>>>>>> qpdf
     echo "FAILED to Combine PDFs!" >&2
     exit 1
   fi
